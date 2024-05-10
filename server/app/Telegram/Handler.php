@@ -14,7 +14,7 @@ class Handler extends WebhookHandler {
 	public function start($message) {
 		$name = $this->message->from()->firstName();
 		$lastName = $this->message->from()->lastName();
-		$this->userController->create($name, $lastName, 0);
+		$this->userController->create($name, $lastName);
 		$this->reply(message: '8=>');
 	}
 
