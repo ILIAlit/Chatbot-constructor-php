@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Models\BotModel;
+use App\Models\TBotModel;
 use DefStudio\Telegraph\Models\TelegraphBot;
 use Illuminate\Support\Facades\DB;
 
@@ -13,11 +14,17 @@ class BotServices {
 					'token' => $token,
 					'name' => $name
 				]);
+				$bot->info();
 				/** @var TelegraphBot $bot */
 				$bot->registerWebhook()->send();
 			});
 		} catch (\Exception $e) {
 			echo "Error: " . $e->getMessage();
 		}
+	}
+
+	public function getBotById(int $id) : TelegraphBot {
+		$bot = TelegraphBot::find($id);
+        return $bot;
 	}
 }

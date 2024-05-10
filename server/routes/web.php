@@ -3,6 +3,7 @@
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\BotManController;
 use App\Models\BotModel;
+use App\Models\TBotModel;
 use DefStudio\Telegraph\Models\TelegraphBot;
 use Illuminate\Support\Facades\Route;
 
