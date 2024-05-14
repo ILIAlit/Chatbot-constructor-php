@@ -27,4 +27,13 @@ class BotServices {
 		$bot = TelegraphBot::find($id);
         return $bot;
 	}
+
+	public function checkUserIsRegistered(int $botId, string $userName) {
+		$bot = $this->getBotById($botId);
+        $user = $bot->users()->where('user_name', $userName)->first();
+        if ($user) {
+            return true;
+        }
+        return false;
+	}
 }

@@ -10,18 +10,25 @@ use Illuminate\Support\Stringable;
 
 class Handler extends WebhookHandler {
 	private UserServices $userServices;
-	public function __construct(UserServices $userServices) {
+	private BotServices $botServices;
+	public function __construct(UserServices $userServices, BotServices $botServices) {
 		$this->userServices = $userServices;
+		$this->botServices = $botServices;
 	}
 	public function start(string $request) {
-		$botservise = new BotServices();
 		$name = $this->message->from()->firstName();
 		$lastName = $this->message->from()->lastName();
+		$userName = $this->message->from()->username();
 		$botId = $this->bot->id;
+		$userCandidate = $this->botServices->checkUserIsRegistered($botId, $userName);
+		if (!$userCandidate) {
+			$this->userServices->createUser($name, $lastName, $userName, $botId);
+			$this->reply(message: 'Пользователь добавлен в БД');
+		} else {
+			$this->reply(message: 'Пользователь уже есть в БД');
+		}
+		Log::info(json_encode($userCandidate, flags: JSON_UNESCAPED_UNICODE));
 		
-		$bot = $this->userServices->createUser($name, $lastName, $botId);
-		Log::info($botservise->getBotById($botId));
-		$this->reply(message: '8=>');
 	}
 
 	protected function handleChatMessage(Stringable $text): void {
