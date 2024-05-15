@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('stage_models', function (Blueprint $table) {
             $table->id();
+            $table->string('text');
+            $table->integer('pause');
+            $table->integer('order');
+            $table->unsignedBigInteger('chain_model_id');
+            $table->foreign('chain_model_id')->references('id')->on('chain_models');
             $table->timestamps();
         });
     }

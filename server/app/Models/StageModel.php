@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class StageModel extends Model
 {
     use HasFactory;
+
+    public function chain() {
+        return $this->belongsTo(ChainModel::class);
+    }
 }

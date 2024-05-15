@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Models\UserModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class UserServices {
@@ -12,7 +13,6 @@ class UserServices {
 		$this->botService = $botService;
 	}
 	public function createUser(string $name, string $last_name,string $userName, int $botId) {
-		$time = $this->timeService->getServerTime();
 			$bot = $this->botService->getBotById($botId);
 
 			$user = new UserModel();
@@ -20,7 +20,6 @@ class UserServices {
 			$user->last_name = $last_name;
 			$user->user_name = $userName;
 			$user->stage = 0;
-			$user->ttu = $time;
 			
 			$user->save();
 			$bot->users()->attach($user);
@@ -31,4 +30,27 @@ class UserServices {
 	public function getUserByUserName(string $userName) {
         return UserModel::where('user_name', $userName)->first();
     }
+
+	public function getUserById(int $userId) {
+		return UserModel::find($userId);
+	}
+
+	public function updateUser($ttu,int $stage, int $userId) {
+		$user = $this->getUserById($userId);
+		$user->ttu = $ttu;
+		$user->stage = $stage;
+		$user->save();
+	}
+
+	public function checkUserTtu() {
+		$users = UserModel::all();
+		$timeNow = $this->timeService->getServerTime();
+        foreach ($users as $user) {
+            
+            if ($timeNow > Carbon::parse($user->ttu)) {
+                $user->stage = 0;
+                $user->save();
+            }
+        }
+	}
 }

@@ -11,6 +11,8 @@ return new class () extends Migration {
             $table->id();
             $table->string('token')->unique();
             $table->string('name')->nullable();
+            $table->unsignedBigInteger('chain_model_id')->nullable();
+            $table->foreign('chain_model_id')->references('id')->on('chain_models');
 
             $table->timestamps();
         });

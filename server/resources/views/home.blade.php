@@ -21,6 +21,11 @@ td {
 
 <body>
 	<div class='container' style="width:700px">
+		<nav>
+			<a href='chain/create'>Создать цепочку</a>
+			<a href='bot/bots'>Мои боты</a>
+		</nav>
+
 		<section>
 			<h1>Create bot</h1>
 			<form method='post' action='/bot/create'>
@@ -49,22 +54,6 @@ td {
 			</div>
 	</div>
 	@endif
-	</section>
-	<section>
-		<hr>
-		<h1>Bots</h1>
-		<table style="width:100%">
-			<tr>
-				<th>id</th>
-				<th>token</th>
-			</tr>
-			@foreach ($bots as $bot)
-			<tr>
-				<td>{{$bot->id}}</td>
-				<td>{{$bot->token}}</td>
-			</tr>
-			@endforeach
-		</table>
 	</section>
 	</div>
 

@@ -2,11 +2,17 @@
 
 namespace App\Services;
 use App\Models\BotModel;
+use App\Models\ChainModel;
 use App\Models\TBotModel;
 use DefStudio\Telegraph\Models\TelegraphBot;
 use Illuminate\Support\Facades\DB;
 
 class BotServices {
+
+	private ChainServices $chainService;
+	public function __construct(ChainServices $chainService) {
+        $this->chainService = $chainService;
+    }
 	public function createBot(string $token, string $name) {
 		try {
 			DB::transaction(function () use ($token, $name) {
@@ -21,6 +27,19 @@ class BotServices {
 		} catch (\Exception $e) {
 			echo "Error: " . $e->getMessage();
 		}
+	}
+
+	public function changeBotChain(int $botId, int $chainId) {
+		$bot = $this->getBotById($botId);
+        $bot->chain_model_id = $chainId;
+		$bot->save();
+	}
+
+	public function getBotChain($botId) {
+		$bot = $this->getBotById($botId);
+        $chainId = $bot->chain_model_id;
+		$chain = $this->chainService->getChainById($chainId);
+        return $chain;
 	}
 
 	public function getBotById(int $id) : TelegraphBot {

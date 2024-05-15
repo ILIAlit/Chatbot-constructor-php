@@ -12,6 +12,10 @@ class ChainModel extends Model
 
     public function bots()
     {
-        return $this->belongsToMany(TelegraphBot::class);
+        return $this->hasMany(TelegraphBot::class);
+    }
+
+    public function stages() {
+        return $this->hasMany(StageModel::class);
     }
 }
