@@ -16,6 +16,9 @@ return new class extends Migration
             $table->integer('stage');
             $table->integer('ttu')->nullable();
             $table->timestamps();
+            $table->unsignedBiginteger('telegraph_bot_id');
+            $table->foreign('telegraph_bot_id')->references('id')
+            ->on('telegraph_bots')->onDelete('cascade');
         });
     }
 

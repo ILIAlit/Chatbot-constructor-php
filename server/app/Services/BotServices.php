@@ -51,7 +51,7 @@ class BotServices {
 		$bot = $this->getBotById($botId);
         $user = $bot->users()->where('user_name', $userName)->first();
         if ($user) {
-            return true;
+            return $user;
         }
         return false;
 	}

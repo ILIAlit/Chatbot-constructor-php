@@ -10,8 +10,8 @@ class UserModel extends Model
 {
     use HasFactory;
 
-    public function bots()
+    public function bot()
     {
-        return $this->belongsToMany(TelegraphBot::class);
+        return $this->belongsTo(TelegraphBot::class);
     }
 }

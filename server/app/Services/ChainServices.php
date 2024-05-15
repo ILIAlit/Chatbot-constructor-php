@@ -36,4 +36,9 @@ class ChainServices {
 		$chain = $this->getChainById($chainId);
 		return $chain->stages()->get();	
     }
+
+	public function getChainStageByOrder(int $chainId, int $stageOrder) {
+		$chain = $this->getChainById($chainId);
+		return $chain->stages()->where('order', $stageOrder)->first();
+    }
 }

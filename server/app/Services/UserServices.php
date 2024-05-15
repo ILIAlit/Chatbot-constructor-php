@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Log;
 class UserServices {
 	private TimeServices $timeService;
 	private BotServices $botService;
-	function __construct(TimeServices $timeService, BotServices $botService) {
+	private ChainServices $chainService;
+	function __construct(TimeServices $timeService, BotServices $botService, ChainServices $chainService) {
 		$this->timeService = $timeService;
 		$this->botService = $botService;
+		$this->chainService = $chainService;
 	}
 	public function createUser(string $name, string $last_name,string $userName, int $botId) {
 			$bot = $this->botService->getBotById($botId);
@@ -21,9 +23,7 @@ class UserServices {
 			$user->user_name = $userName;
 			$user->stage = 0;
 			
-			$user->save();
-			$bot->users()->attach($user);
-			$bot->save();
+			$bot->users()->save($user);
 			return $user;
 	}
 
@@ -43,14 +43,18 @@ class UserServices {
 	}
 
 	public function checkUserTtu() {
-		$users = UserModel::all();
-		$timeNow = $this->timeService->getServerTime();
-        foreach ($users as $user) {
-            
-            if ($timeNow > Carbon::parse($user->ttu)) {
-                $user->stage = 0;
-                $user->save();
-            }
-        }
+		while(true) {
+			sleep(5);
+			$users = UserModel::all();
+			$timeNow = $this->timeService->getServerTime();
+			foreach ($users as $user) {
+				if ($timeNow > Carbon::parse($user->ttu)) {
+					$bot = $this->botService->getBotById($user->telegraph_bot_id);
+					$chain = $this->botService->getBotChain($bot->id);
+					$stage = $this->chainService->getChainStageByOrder($chain->id, $user->stage);
+					Log::info($stage);
+				}
+			}
+		}
 	}
 }

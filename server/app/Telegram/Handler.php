@@ -27,7 +27,7 @@ class Handler extends WebhookHandler {
 		$userName = $this->message->from()->username();
 		$botId = $this->bot->id;
 
-		$user  = $this->userServices->getUserByUserName($userName);
+		$user  = $this->botServices->checkUserIsRegistered($botId, $userName);
 		if (!$user) {
 			$user = $this->userServices->createUser($name, $lastName, $userName, $botId);
 		} else {

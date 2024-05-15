@@ -8,8 +8,5 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function create($name, $last_name) {
-        $time = new Carbon();
-        
-    }
+    
 }
