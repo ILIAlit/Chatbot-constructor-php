@@ -21,6 +21,7 @@ class BotServices {
 					'name' => $name
 				]);
 				$bot->info();
+				$bot->save();
 				/** @var TelegraphBot $bot */
 				$bot->registerWebhook()->send();
 			});

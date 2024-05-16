@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('user_name');
             $table->integer('stage');
+            $table->integer('tg_chat_id');
             $table->integer('ttu')->nullable();
             $table->timestamps();
             $table->unsignedBiginteger('telegraph_bot_id');

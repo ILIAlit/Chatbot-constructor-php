@@ -26,13 +26,15 @@ class Handler extends WebhookHandler {
 		$lastName = $this->message->from()->lastName();
 		$userName = $this->message->from()->username();
 		$botId = $this->bot->id;
+		$chatId = $this->message->chat()->id();
 
 		$user  = $this->botServices->checkUserIsRegistered($botId, $userName);
 		if (!$user) {
-			$user = $this->userServices->createUser($name, $lastName, $userName, $botId);
+			$user = $this->userServices->createUser($name, $lastName, $userName, $botId, $chatId);
 		} else {
 			$this->userServices->updateUser(null , 0, $user->id);	
 		}
+		
 		$chain = $this->botServices->getBotChain($botId);
 		if(!$chain) {
 			$this->reply(message: 'Бот в разработке!');

@@ -8,13 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * Определить расписание выполнения команд приложения.
-     */
-    protected function schedule(Schedule $schedule): void
-    {
-        $schedule->call(function () {
-           Log::info("Schedule");
-        })->everySecond();
-    }
+    protected $commands = [
+        \App\Console\Commands\CheckUserTtuCommand::class,
+    ];
 }
