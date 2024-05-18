@@ -43,6 +43,12 @@ class BotServices {
         return $chain;
 	}
 
+	public function getBotTriggers($botId) {
+		$bot = $this->getBotById($botId);
+        $triggers = $bot->triggers;
+        return $triggers;
+	}
+
 	public function getBotById(int $id) : TelegraphBot {
 		$bot = TelegraphBot::find($id);
         return $bot;

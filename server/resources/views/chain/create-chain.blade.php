@@ -20,7 +20,7 @@
 				</p>
 				<div id="message-container"></div>
 				<button onclick="addMessageComponent()">Добавить элемент</button>
-				<div onclick="submit()">Сохранить</div>
+				<button onclick="submit()">Сохранить</button>
 
 				</p>
 			</fieldset>
@@ -68,6 +68,14 @@
 
 	function submit() {
 		const title = inputTitle.value;
+		if (!title) {
+			alert("Пожалуйста, введите заголовок цепочки.");
+			return;
+		}
+		if (!messages.length) {
+			alert("Пожалуйста, добавьте элемент цепочки.");
+			return;
+		}
 		const data = {
 			title: title,
 			stages: messages
@@ -81,7 +89,13 @@
 				"X-CSRF-Token": document.querySelector('input[name=_token]').value
 			},
 			body: JSON.stringify(data)
-		}).then((res) => console.log(res));
+		}).then((res) => {
+			if (res.status == 200) {
+				location.href = "/";
+			} else {
+				alert("Ошибка при создании цепочки");
+			}
+		});
 	}
 	</script>
 </body>

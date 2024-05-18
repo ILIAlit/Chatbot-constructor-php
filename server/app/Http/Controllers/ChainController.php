@@ -19,5 +19,6 @@ class ChainController extends Controller
         $stages = $data->stages;
         $title = $data->title;
         $this->chainServices->createChain($title, $stages);
+        return redirect()->route('home');
     }
 }

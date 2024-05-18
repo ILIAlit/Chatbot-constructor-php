@@ -32,7 +32,7 @@ td {
 				<tr>
 					<td>{{$bot->id}}</td>
 					<td>{{$bot->token}}</td>
-					<td><a href='update-bot/{{$bot->id}}'>Изменить</a></td>
+					<td><a href='bot/update-bot/{{$bot->id}}'>Изменить</a></td>
 				</tr>
 				@endforeach
 			</table>

@@ -2,9 +2,11 @@
 
 namespace app\Telegram;
 use App\Http\Controllers\UserController;
+use App\Models\TriggerModel;
 use App\Services\BotServices;
 use App\Services\ChainServices;
 use App\Services\TimeServices;
+use App\Services\TriggerServices;
 use App\Services\UserServices;
 use DefStudio\Telegraph\Handlers\WebhookHandler;
 use Illuminate\Support\Facades\Log;
@@ -15,11 +17,15 @@ class Handler extends WebhookHandler {
 	private ChainServices $chainServices;
 	private BotServices $botServices;
 	private TimeServices $timeServices;
-	public function __construct(UserServices $userServices, BotServices $botServices, ChainServices $chainServices, TimeServices $timeServices) {
+
+	private TriggerServices $triggerServices;
+
+	public function __construct(UserServices $userServices, BotServices $botServices, ChainServices $chainServices, TimeServices $timeServices, TriggerServices $triggerServices) {
 		$this->userServices = $userServices;
 		$this->botServices = $botServices;
 		$this->chainServices = $chainServices;
 		$this->timeServices = $timeServices;
+		$this->triggerServices = $triggerServices;
 	}
 	public function start(string $request) {
 		$name = $this->message->from()->firstName();
@@ -54,7 +60,12 @@ class Handler extends WebhookHandler {
 
 	protected function handleChatMessage(Stringable $text): void {
 		Log::info(json_encode($this->message, flags: JSON_UNESCAPED_UNICODE));
-		$this->reply(message: $this->message->from()->username());
-		$this->reply(message: ';)');
+		$botId = $this->bot->id;
+		$chatId = $this->message->chat()->id();
+		$trigger = $this->triggerServices->getOneBotTrigger($botId,$text);
+		if($trigger) {
+            $this->reply(message: $trigger->text);
+            return;
+        }
 	}
 }
