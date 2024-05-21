@@ -6,45 +6,66 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>home</title>
+	<title>Главная</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body class='p-20'>
-	<div>
-		<nav class="navbar navbar-expand navbar-light bg-white topbar p-3 mb-2 static-top shadow">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="/">
-					<img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24"
-						class="d-inline-block align-text-top">
-					Bootstrap
-				</a>
-			</div>
-		</nav>
-	</div>
-	<div class='d-flex align-items-start p-5'>
-		<!-- <nav class='navbar-nav bg-gradient-primary sidebar sidebar-dark accordion' id='accordionSidebar'>
-			<li class='nav-item active' href='chain'>Создать цепочку</li>
-			<a href='trigger'>Создать триггер</a>
-			<a href='bot'>Мои боты</a>
-		</nav> -->
-		<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-			<a href='/' class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
-				data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
-				aria-selected="true">Главная</a>
-			<a href='chain' class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
-				data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
-				aria-selected="false">Создать цепочку</a>
-			<button class="nav-link" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled"
-				type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false"
-				disabled>Disabled</button>
-			<button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages"
-				type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
-			<button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings"
-				type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+<body>
+	<header class="navbar navbar-expand navbar-light bg-black topbar p-3 static-top shadow">
+		<div class="container-fluid">
+			<a class="navbar-brand text-white" href="/">
+				<!-- <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24"
+					class="d-inline-block align-text-top"> -->
+				Bootstrap
+			</a>
 		</div>
-		<div>
-			@yield('main')
+	</header>
+	<div class="container-fluid">
+
+		<div class="row flex-nowrap">
+			<div class="col-auto col-md-3 bg-light shadow col-xl-2 px-sm-2 px-0 ">
+				<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+					<a href="/"
+						class="d-flex align-items-center mt-3 pb-3 mb-md-0 me-md-auto text-black text-decoration-none">
+						<span class="d-none d-sm-inline h3">Меню</span>
+					</a>
+					<ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+						id="menu">
+						<li>
+							<a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+								<i class="fs-4 bi-bootstrap"></i> <span
+									class="ms-1 h5 d-none d-sm-inline">Боты</span></a>
+							<ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+								<li class="w-100">
+									<a href="/" class="nav-link px-0"> <span class="d-none d-sm-inline text-black">Мои
+											боты</span>
+									</a>
+								</li>
+								<li>
+									<a href="/bot/create" class="nav-link px-0"> <span
+											class="d-none d-sm-inline text-black">Создать
+											бота</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="/chain" class="nav-link px-0 align-middle">
+								<i class="fs-4 bi-speedometer2"></i> <span
+									class="ms-1 h5 d-none d-sm-inline">Цепочки</span>
+							</a>
+						</li>
+						<li>
+							<a href="/trigger" class="nav-link px-0 align-middle">
+								<i class="fs-4 bi-table"></i> <span
+									class="ms-1 h5 d-none d-sm-inline">Триггеры</span></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div id='main' class='col p-5'>
+				@yield('main')
+			</div>
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

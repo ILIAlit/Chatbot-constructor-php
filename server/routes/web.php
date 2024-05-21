@@ -9,13 +9,13 @@ use App\Models\TBotModel;
 use DefStudio\Telegraph\Models\TelegraphBot;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/bot/create', function () {
     return view('home');
 })->name('home');
 Route::get('/chain', function () {
     return view('chain/create-chain');
 })->name('create-chain');
-Route::get('/bot', [BotController::class, 'getAll'])->name('get-all-bots');
+Route::get('/', [BotController::class, 'getAll'])->name('get-all-bots');
 Route::get('/bot/update-bot/{id}', [BotController::class, 'updateBotIndex'])->name('update-bot-page');
 Route::get('/trigger', [TriggerController::class, 'index'])->name('get-trigger-page');
 
