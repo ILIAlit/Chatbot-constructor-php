@@ -19,7 +19,5 @@ class TelegramServices {
 				'text' => $message,
 			],
 		]);
-
-		echo $response->getBody();
 	}
 }

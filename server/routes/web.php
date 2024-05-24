@@ -9,14 +9,18 @@ use App\Models\TBotModel;
 use DefStudio\Telegraph\Models\TelegraphBot;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', [BotController::class, 'getAll'])->name('home');
+
 Route::get('/bot/create', function () {
-    return view('home');
-})->name('home');
-Route::get('/chain', function () {
+    return view('bot/create');
+})->name('create-bot');
+Route::get('/bot/update-bot/{id}', [BotController::class, 'updateBotIndex'])->name('update-bot-page');
+
+Route::get('/chain/create', function () {
     return view('chain/create-chain');
 })->name('create-chain');
-Route::get('/', [BotController::class, 'getAll'])->name('get-all-bots');
-Route::get('/bot/update-bot/{id}', [BotController::class, 'updateBotIndex'])->name('update-bot-page');
+Route::get('/chain', [ChainController::class, 'getAll'])->name('get-all-chain');
+
 Route::get('/trigger', [TriggerController::class, 'index'])->name('get-trigger-page');
 
 

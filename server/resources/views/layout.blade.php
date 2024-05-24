@@ -1,5 +1,3 @@
-@vite(['resources/css/app.css'])
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Главная</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -50,10 +49,23 @@
 							</ul>
 						</li>
 						<li>
-							<a href="/chain" class="nav-link px-0 align-middle">
-								<i class="fs-4 bi-speedometer2"></i> <span
-									class="ms-1 h5 d-none d-sm-inline">Цепочки</span>
-							</a>
+							<a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+								<i class="fs-4 bi-bootstrap"></i> <span
+									class="ms-1 h5 d-none d-sm-inline">Цепочки</span></a>
+							<ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
+								<li class="w-100">
+									<a href="/chain" class="nav-link px-0"> <span
+											class="d-none d-sm-inline text-black">Мои
+											цепочки</span>
+									</a>
+								</li>
+								<li>
+									<a href="/chain/create" class="nav-link px-0"> <span
+											class="d-none d-sm-inline text-black">Создать
+											цепочку</span>
+									</a>
+								</li>
+							</ul>
 						</li>
 						<li>
 							<a href="/trigger" class="nav-link px-0 align-middle">

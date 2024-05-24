@@ -1,32 +1,24 @@
 @extends('layout')
 
 @section('main')
-<div>
-
-	<form method='post' action='/bot/create'>
-		@csrf
-		<fieldset>
-			<legend>Create bot</legend>
-			<p>
-				<label for="name">Name</label>
-				<input type="text" required name="name" id="name">
-			</p>
-			<p>
-				<label for="token">Token</label>
-				<input type="text" required name="token" id="token">
-			</p>
-			<input type='submit'>
-			</p>
-		</fieldset>
-	</form>
-	@if ($errors-> any())
-	<div style='background: red'>
-		<ul>
-			@foreach ($errors->all() as $error)
-			<li>{{ $error }}</li>
+<div class='container'>
+	<section>
+		<h1 class='pb-2'>Мои боты</h1>
+		<table class="table">
+			<tr>
+				<th>id</th>
+				<th>token</th>
+			</tr>
+			@foreach ($bots as $bot)
+			<tr>
+				<td>{{$bot->id}}</td>
+				<td>{{$bot->token}}</td>
+				<td>{{$bot->webinar_start_time}}</td>
+				<td>{{$bot->name}}</td>
+				<td><a href='bot/update-bot/{{$bot->id}}'>Изменить</a></td>
+			</tr>
 			@endforeach
-		</ul>
-	</div>
-	@endif
+		</table>
+	</section>
 </div>
 @endsection

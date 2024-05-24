@@ -18,4 +18,8 @@ class ChainModel extends Model
     public function stages() {
         return $this->hasMany(StageModel::class);
     }
+
+    public function stagesFoTome() {
+        return $this->hasMany(StageTimeModel::class);
+    }
 }

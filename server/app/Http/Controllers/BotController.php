@@ -24,17 +24,21 @@ class BotController extends Controller
     public function create(Request $request) {
         $name = $request->input('name');
         $token = $request->input('token');
+       
+        
+
         $valid = $request->validate([
             'token' => 'required',
             'name' => 'required',
         ]);
+        
         $this->botService->createBot($token, $name);
         return redirect()->route('home');
     }
 
     public function getAll() {
         $bots = TelegraphBot::all();
-        return view('bot/bots', ['bots' => $bots]);
+        return view('home', ['bots' => $bots]);
     }
 
     public function updateBotIndex(string $id) {

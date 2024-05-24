@@ -17,7 +17,6 @@ class TriggerServices {
         $trigger->trigger = $triggerValue;
         $trigger->text = $textValue;
         $trigger->save();
-		
         return $trigger;
 	}
 

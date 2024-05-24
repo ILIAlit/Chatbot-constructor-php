@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chain_models', function (Blueprint $table) {
+        Schema::create('stage_time_models', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('webinar_start_time')->nullable();
+            $table->string('text');
+            $table->integer('time');
+            $table->integer('order');
+            $table->unsignedBigInteger('chain_model_id');
+            $table->foreign('chain_model_id')->references('id')->on('chain_models');
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chain_models');
+        Schema::dropIfExists('stage_time_models');
     }
 };

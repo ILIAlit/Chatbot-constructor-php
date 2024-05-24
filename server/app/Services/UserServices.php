@@ -3,7 +3,7 @@
 namespace App\Services;
 use App\Models\UserModel;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+
 
 class UserServices {
 	private TimeServices $timeService;
@@ -11,11 +11,14 @@ class UserServices {
 	private ChainServices $chainService;
 	private TelegramServices $telegramService;
 
-	function __construct(TimeServices $timeService, BotServices $botService, ChainServices $chainService, TelegramServices $telegramService) {
+	//private ProcessTtuServices $processTtuServices;
+
+	function __construct(TimeServices $timeService, BotServices $botService, ChainServices $chainService, TelegramServices $telegramService, ) {
 		$this->timeService = $timeService;
 		$this->botService = $botService;
 		$this->chainService = $chainService;
 		$this->telegramService = $telegramService;
+		//$this->processTtuServices = $processTtuServices;
 	}
 	public function createUser(string $name, string $last_name,string $userName, int $botId, int $chatId) {
 			$bot = $this->botService->getBotById($botId);
@@ -46,7 +49,7 @@ class UserServices {
 		$user->save();
 	}
 
-	public function checkUserTtu() {
+		public function checkUserTtu() {
 			$users = UserModel::all();
 			$timeNow = $this->timeService->getServerTime();
 			foreach ($users as $user) {
@@ -64,15 +67,24 @@ class UserServices {
 					$this->telegramService->sendMessage($bot->token, $user->tg_chat_id, $stage->text);
 					$nextStage = $this->chainService->getChainStageByOrder($chain->id, $user->stage + 1);
 					if(!$nextStage) {
-						Log::info($user->stage);
-						$this->updateUser($timeNow,$user->stage + 1, $user->id);
+						$this->updateUser($timeNow,-1, $user->id);
 						continue;
 					}
-					
+					if(isset($nextStage->time)) {
+						$checkUserRegisterTime = $this->timeService->checkUserRegisterTime($chain->webinar_start_time, $user->created_at);
+						if($checkUserRegisterTime) {
+							$userTtu = $this->timeService->getUserTtuFoTime(1, $nextStage->time);
+							$this->updateUser($userTtu,$nextStage->order, $user->id);
+							continue;
+						} else {
+							$userTtu = $this->timeService->getUserTtuFoTime(0, $nextStage->time);
+							$this->updateUser($userTtu,$nextStage->order, $user->id);
+							continue;
+						}
+					}
 					$userTtu = $this->timeService->getUserTtu($nextStage->pause);
 					$this->updateUser($userTtu,$nextStage->order, $user->id);
 				}
 			}
-		Log::info('Check');
 	}
 }

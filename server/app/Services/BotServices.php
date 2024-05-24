@@ -6,21 +6,24 @@ use App\Models\ChainModel;
 use App\Models\TBotModel;
 use DefStudio\Telegraph\Models\TelegraphBot;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BotServices {
 
 	private ChainServices $chainService;
-	public function __construct(ChainServices $chainService) {
+
+	private TimeServices $timeService;
+	public function __construct(ChainServices $chainService, TimeServices $timeService) {
         $this->chainService = $chainService;
+		$this->timeService = $timeService;
     }
 	public function createBot(string $token, string $name) {
 		try {
 			DB::transaction(function () use ($token, $name) {
 				$bot = TelegraphBot::create([
 					'token' => $token,
-					'name' => $name
+					'name' => $name,
 				]);
-				$bot->info();
 				$bot->save();
 				/** @var TelegraphBot $bot */
 				$bot->registerWebhook()->send();
