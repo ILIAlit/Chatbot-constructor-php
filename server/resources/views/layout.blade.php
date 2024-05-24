@@ -9,7 +9,12 @@
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body id='main-screen' class=''>
+	<div id='loader' class='d-none'>
+		<div class="loading-state">
+			<div class="loading"></div>
+		</div>
+	</div>
 	<header class="navbar navbar-expand navbar-light bg-black topbar p-3 static-top shadow">
 		<div class="container-fluid">
 			<a class="navbar-brand text-white" href="/">
@@ -68,9 +73,23 @@
 							</ul>
 						</li>
 						<li>
-							<a href="/trigger" class="nav-link px-0 align-middle">
-								<i class="fs-4 bi-table"></i> <span
+							<a href="#submenu4" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+								<i class="fs-4 bi-bootstrap"></i> <span
 									class="ms-1 h5 d-none d-sm-inline">Триггеры</span></a>
+							<ul class="collapse nav flex-column ms-1" id="submenu4" data-bs-parent="#menu">
+								<li class="w-100">
+									<a href="/trigger" class="nav-link px-0"> <span
+											class="d-none d-sm-inline text-black">Мои
+											триггеры</span>
+									</a>
+								</li>
+								<li>
+									<a href="/trigger/create-trigger" class="nav-link px-0"> <span
+											class="d-none d-sm-inline text-black">Создать
+											триггер</span>
+									</a>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</div>

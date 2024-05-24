@@ -65,4 +65,11 @@ class BotServices {
         }
         return false;
 	}
+
+	public function deleteBot($botId) {
+		$bot = $this->getBotById($botId);
+        $bot->delete();
+		/** @var \DefStudio\Telegraph\Models\TelegraphBot $telegraphBot */
+		$bot->unregisterWebhook()->send();
+	}
 }

@@ -28,8 +28,8 @@ class BotController extends Controller
         
 
         $valid = $request->validate([
-            'token' => 'required',
-            'name' => 'required',
+            'token' => 'required|min:44',
+            'name' => 'required|min:5',
         ]);
         
         $this->botService->createBot($token, $name);
@@ -64,5 +64,9 @@ class BotController extends Controller
         $data = json_decode($jsonData);
         $triggers = $data->triggers;
         $this->triggerService->addTriggersToBot($triggers, $botId);
+    }
+
+    public function deleteBot(Request $request, string $botId) {
+        $this->botService->deleteBot($botId);
     }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('pause');
             $table->integer('order');
             $table->unsignedBigInteger('chain_model_id');
-            $table->foreign('chain_model_id')->references('id')->on('chain_models');
+            $table->foreign('chain_model_id')->references('id')->on('chain_models')->onDelete('cascade');
             $table->timestamps();
         });
     }

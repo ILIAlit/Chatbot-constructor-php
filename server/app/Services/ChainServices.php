@@ -46,7 +46,7 @@ class ChainServices {
 	public function getChainStages(int $chainId) {
 		$chain = $this->getChainById($chainId);
 		$stages =  $chain->stages()->get();
-		$timeStages = $chain->stagesFoTome()->get();
+		$timeStages = $chain->stagesFoTime()->get();
 		foreach($timeStages as $timeStage) {
 			$stages->push($timeStage);
 		}
@@ -62,7 +62,7 @@ class ChainServices {
 		if($stage) {
 			return $stage;
 		}
-		$timeStage = $chain->stagesFoTome()->where('order', $stageOrder)->first();
+		$timeStage = $chain->stagesFoTime()->where('order', $stageOrder)->first();
 		if($timeStage) {
             return $timeStage;
         }

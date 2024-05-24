@@ -289,6 +289,7 @@ function transformData(dateValue) {
 }
 
 function submit() {
+	loadingTrue()
 	const inputTitle = document.getElementById('title');
 	const inputStartTime = document.getElementById('date-piker-start-time')
 	const messages = transformMessage()
@@ -321,7 +322,6 @@ function submit() {
 		},
 		body: JSON.stringify(data)
 	}).then((res) => {
-		console.log(res.status);
 		if (res.status === 200) {
 			location.href = "/";
 		} else {

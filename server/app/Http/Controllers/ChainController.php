@@ -6,6 +6,7 @@ use App\Models\ChainModel;
 use App\Models\StageModel;
 use App\Services\ChainServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ChainController extends Controller
@@ -24,13 +25,21 @@ class ChainController extends Controller
         if(!$webinar_start_time) {
             $webinar_start_time = null;
         }
-        
         $this->chainServices->createChain($title, $stages, $webinar_start_time);
-        return redirect()->route('home');
+        return redirect()->route('chain');
     }
 
     public function getAll() {
         $chains = ChainModel::all();
         return view('chain/chain', ['chains' => $chains]);
+    }
+
+    public function deleteChain(Request $request, string $chainId) {
+        DB::transaction(function () use ($chainId) {
+            $chain = ChainModel::find($chainId);
+            $chain->stages()->delete();
+            $chain->delete();
+            return redirect()->route('chain');
+        });
     }
 }

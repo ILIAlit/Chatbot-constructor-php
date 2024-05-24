@@ -15,7 +15,8 @@ class TriggerController extends Controller
     }
 
     public function index() {
-        return view('trigger/trigger');
+        $triggers = $this->triggerServices->getTriggers();
+        return view('trigger/trigger', ['triggers' => $triggers]);
     }
 
     public function create(Request $request) {

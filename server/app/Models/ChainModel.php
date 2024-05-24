@@ -19,7 +19,7 @@ class ChainModel extends Model
         return $this->hasMany(StageModel::class);
     }
 
-    public function stagesFoTome() {
+    public function stagesFoTime() {
         return $this->hasMany(StageTimeModel::class);
     }
 }

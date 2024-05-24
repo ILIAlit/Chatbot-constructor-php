@@ -34,6 +34,7 @@ class Handler extends WebhookHandler {
         $chatId = $this->message->chat()->id();
         $user = $this->getUser($botId, $chatId);
         $chain = $this->getChain($user);
+        if(!$chain) return;
         $this->processStages($chain, $user, $botId);
     }
 
