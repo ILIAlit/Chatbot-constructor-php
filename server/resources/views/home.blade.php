@@ -9,23 +9,29 @@
 			<tr>
 				<th>ID</th>
 				<th>Имя</th>
+				<th>Активная цепочка</th>
 				<th>Изменить</th>
 				<th>Удалить</th>
 			</tr>
 			@foreach ($bots as $bot)
 			<tr>
-				<th class='align-middle'>{{$bot->id}}</th>
+				<th class='align-middle'>{{$bot['id']}}</th>
 				<td class='span2 align-middle'>
 					<span class='w-50 d-inline-block text-truncate'>
-						🤖{{$bot->name}}
+						🤖{{$bot['name']}}
+					</span>
+				</td>
+				<td class='span2 align-middle'>
+					<span class='w-50 d-inline-block text-truncate'>
+						⛓{{$bot['chainName']}}
 					</span>
 				</td>
 				<td>
-					<button type="button" onclick='clickUpdateButton({{$bot->id}})'
+					<button type="button" onclick='clickUpdateButton({{$bot["id"]}})'
 						class="btn btn-primary">Изменить</button>
 				</td>
 				<td>
-					<button type="button" onclick='clickDeleteButton({{$bot->id}})'
+					<button type="button" onclick='clickDeleteButton({{$bot["id"]}})'
 						class="btn btn-danger">Удалить</button>
 				</td>
 

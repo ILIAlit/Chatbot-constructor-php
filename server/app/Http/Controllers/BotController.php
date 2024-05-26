@@ -38,7 +38,20 @@ class BotController extends Controller
 
     public function getAll() {
         $bots = TelegraphBot::all();
-        return view('home', ['bots' => $bots]);
+        $responseBots = array_map(function ($bot) { 
+            $chainTitle = 'Нет';
+            if($bot['chain_model_id']) {
+                $chain = $this->chainService->getChainById($bot['chain_model_id']);
+                $chainTitle = $chain->title;
+            }   
+            return [
+                'id' => $bot['id'],
+                'name' => $bot['name'],
+                'token' => $bot['token'],
+                'chainName' =>  $chainTitle
+            ];
+        }, $bots->toArray());
+        return view('home', ['bots' => $responseBots]);
     }
 
     public function updateBotIndex(string $id) {

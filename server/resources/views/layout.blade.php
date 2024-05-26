@@ -83,12 +83,6 @@
 											триггеры</span>
 									</a>
 								</li>
-								<li>
-									<a href="/trigger/create-trigger" class="nav-link px-0"> <span
-											class="d-none d-sm-inline text-black">Создать
-											триггер</span>
-									</a>
-								</li>
 							</ul>
 						</li>
 					</ul>

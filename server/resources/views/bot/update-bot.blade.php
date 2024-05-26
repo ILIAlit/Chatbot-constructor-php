@@ -1,111 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout')
 
-<style>
-.container {
-	padding: 30px;
-}
+@section('main')
+<div>
+	<section class=' w-50'>
+		<h1 class='pb-5'>Бот {{$bot->name}}</h1>
+		@csrf
+		<div class="input-group mb-3">
+			<span class="input-group-text" id="basic-addon1">🤖</span>
+			<input disabled type="text" value='{{$bot->name}}' required class="form-control p-2" id='name' name='name'
+				placeholder="Имя" aria-label="Название" aria-describedby="basic-addon1">
+		</div>
+		<div class="input-group mb-3">
+			<span class="input-group-text" id="basic-addon1">✨</span>
+			<input disabled type="text" value='{{$bot->token}}' required class="form-control p-2" id='token'
+				name='token' placeholder="Токен" aria-label="Название" aria-describedby="basic-addon1">
+		</div>
+		<select class="element-select p-2 mt-3" aria-label="element-selected" id='chain-select' name='chain'>
+			<option value='#'>Без цепочки</option>
+			@foreach ($chains as $chain)
+			@if ($chain->id === $bot->chain_model_id)
+			<option selected value="{{$chain->id}}">{{$chain->title}}</option>
+			@else
+			<option value="{{$chain->id}}">{{$chain->title}}</option>
+			@endif
 
-table,
-th,
-td {
-	border: 1px solid black;
-}
-</style>
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Изменить бота</title>
-</head>
-
-<body>
-	<div class='container' style="width:700px">
-		<section>
-			<hr>
-			<h1>Bot {{$bot->name}}</h1>
-			@csrf
-			<table style="width:100%">
-				<tr>
-					<th>id</th>
-					<th>token</th>
-				</tr>
-				<tr>
-					<td>{{$bot->id}}</td>
-					<td>{{$bot->token}}</td>
-					<td>
-						<select id='chain-select' name='chain'>
-							@foreach ($chains as $chain)
-							<option value="{{$chain->id}}">{{$chain->title}}</option>
-							@endforeach
-						</select>
-					</td>
-				</tr>
-			</table>
-			<br />
-			<fieldset>
-				<legend>Triggers:</legend>
-				@foreach ($triggers as $trigger)
-				@if (in_array($trigger->id, $botIdTriggersArray))
-				<div>
+			@endforeach
+		</select>
+		@if (count($triggers))
+		<div class='d-flex gap-3 mt-5 mb-2 items-center'>
+			<h5 class='mh-25'>Триггеры</h5>
+			<!-- <input oninput='triggersSearch({{$triggers}})' type="text" id='search-input' class="form-control p-2"
+				placeholder="Поиск" aria-label="Поиск" aria-describedby="basic-addon1"> -->
+		</div>
+		<table class="table table-hover">
+			<tr>
+				<th>Выбор</th>
+				<th>Триггер</th>
+				<th>Ответ</th>
+			</tr>
+			@foreach($triggers as $trigger)
+			@if (in_array($trigger->id, $botIdTriggersArray))
+			<tr>
+				<th class='align-middle'>
 					<input type="checkbox" id="{{$trigger->trigger}}" name="{{$trigger->id}}" checked />
-					<label for="{{$trigger->trigger}}"><b>Триггер:</b> {{$trigger->trigger}}</label>
-					<label for="{{$trigger->trigger}}"><b>Ответ:</b> {{$trigger->trigger}}</label>
-				</div>
-				@else
-				<div>
+				</th>
+				<td class='span2 align-middle'>
+					<span class='w-50 d-inline-block text-truncate'>
+						{{$trigger->trigger}}
+					</span>
+				</td>
+				<td class='span2 align-middle'>
+					<span class='w-50 d-inline-block text-truncate'>
+						{{$trigger->text}}
+					</span>
+				</td>
+			</tr>
+			@else
+			<tr>
+				<th class='align-middle'>
 					<input type="checkbox" id="{{$trigger->trigger}}" name="{{$trigger->id}}" />
-					<label for="{{$trigger->trigger}}"><b>Триггер:</b> {{$trigger->trigger}}</label>
-					<label for="{{$trigger->trigger}}"><b>Ответ:</b> {{$trigger->text}}</label>
-				</div>
-				@endif
-				@endforeach
-			</fieldset>
-			<br>
-			<button onclick="updateBotChain({{$bot->id}}), updateBotTriggers({{$bot->id}})">Применить</button>
-		</section>
-	</div>
-	<script>
-	function updateBotChain(botId) {
-		const chainSelect = document.getElementById('chain-select');
-		const chainId = chainSelect.value;
-		fetch(`/bot/changeBotChain/${botId}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				"X-CSRF-Token": document.querySelector('input[name=_token]').value
-			},
-			body: JSON.stringify({
-				chainId: chainId
-			}),
-		}).then((res) => console.log(res))
+				</th>
+				<td class='span2 align-middle'>
+					<span class='w-50 d-inline-block text-truncate'>
+						{{$trigger->trigger}}
+					</span>
+				</td>
+				<td class='span2 align-middle'>
+					<span class='w-50 d-inline-block text-truncate'>
+						{{$trigger->text}}
+					</span>
+				</td>
+			</tr>
+			@endif
+			@endforeach
+		</table>
+		@endif
+		<br />
+		<button onclick='loadingTrue(), updateBotChain({{$bot->id}}), updateBotTriggers({{$bot->id}})' id='submit-btn'
+			type="button" class="btn btn-primary mt-5">Сохранить</button>
+
+
+
+	</section>
+</div>
+<script>
+function updateBotChain(botId) {
+	const chainSelect = document.getElementById('chain-select');
+	let chainId = chainSelect.value;
+	if (chainId === '#') {
+		chainId = null
 	}
+	console.log(chainId)
+	fetch(`/bot/changeBotChain/${botId}`, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			"X-CSRF-Token": document.querySelector('input[name=_token]').value
+		},
+		body: JSON.stringify({
+			chainId: chainId
+		}),
+	}).then((res) => console.log(res))
+}
 
-	function updateBotTriggers(botId) {
-		const selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+function updateBotTriggers(botId) {
+	const selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
-		const checkTriggers = Array.from(selectedCheckboxes).map((checkbox) => {
-			return checkbox.name;
-		});
+	const checkTriggers = Array.from(selectedCheckboxes).map((checkbox) => {
+		return checkbox.name;
+	});
 
-		console.log(checkTriggers)
+	console.log(checkTriggers)
 
-		fetch(`/bot/updateBotTriggers/${botId}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				"X-CSRF-Token": document.querySelector('input[name=_token]').value
-			},
-			body: JSON.stringify({
-				triggers: checkTriggers
-			}),
-		}).then((res) => {
-			if (res.status === 200) {
-				location.href = '/'
-			}
-		})
-	}
-	</script>
-</body>
+	fetch(`/bot/updateBotTriggers/${botId}`, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			"X-CSRF-Token": document.querySelector('input[name=_token]').value
+		},
+		body: JSON.stringify({
+			triggers: checkTriggers
+		}),
+	}).then((res) => {
+		if (res.status === 200) {
+			location.href = '/'
+		}
+	})
+}
 
-</html>
+// const searchInput = document.getElementById('search-input')
+
+// function triggersSearch(triggers) {
+// 	console.log(triggers)
+// }
+</script>
+@endsection

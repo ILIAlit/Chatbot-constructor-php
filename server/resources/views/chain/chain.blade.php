@@ -36,7 +36,7 @@
 </div>
 <script>
 const clickUpdateButton = (botId) => {
-	window.location.href = `bot/update-bot/${botId}`;
+	window.location.href = `chain/update-chain/${botId}`;
 }
 
 const clickDeleteButton = (chainId) => {

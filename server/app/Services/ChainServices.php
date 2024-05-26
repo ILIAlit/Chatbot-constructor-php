@@ -68,4 +68,25 @@ class ChainServices {
         }
 		return null;
     }
+
+	public function updateChain(string $chainId, string $title, array  $stages, $webinarTime) {
+		DB::transaction(function() use ($chainId, $title, $stages, $webinarTime) {
+            $chain = $this->getChainById($chainId);
+            $chain->title = $title;
+            if($webinarTime) {
+                $webinarTime = $this->timeService->transformTimeToCarbon($webinarTime);
+            }
+            $chain->webinar_start_time = $webinarTime;
+			$chain->save();
+			$stagesDeleted = $this->getChainStages($chainId); 
+			foreach($stagesDeleted as $stageDeleted) {
+                $stageDeleted->delete();
+            }           
+            foreach ($stages as $stage) {
+                $stageModel = $this->stageService->createStage($stage);
+                $chain->stages()->save($stageModel);
+            }
+            return $chain;
+        });
+	}
 }

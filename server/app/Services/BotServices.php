@@ -33,7 +33,7 @@ class BotServices {
 		}
 	}
 
-	public function changeBotChain(int $botId, int $chainId) {
+	public function changeBotChain(int $botId, int | null $chainId) {
 		$bot = $this->getBotById($botId);
         $bot->chain_model_id = $chainId;
 		$bot->save();

@@ -27,6 +27,6 @@ class TriggerController extends Controller
             'text' => 'required',
         ]);
         $this->triggerServices->createTrigger($trigger, $text);
-        return redirect()->route('home');
+        return redirect()->route('get-trigger-page');
     }
 }
